@@ -1,0 +1,680 @@
+{
+    "openapi": "3.0.0",
+    "components": {
+        "examples": {},
+        "headers": {},
+        "parameters": {},
+        "requestBodies": {},
+        "responses": {},
+        "schemas": {
+            "TestResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "sceneId": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "sceneId",
+                    "state",
+                    "createdAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "CreateTestRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "sceneId": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ]
+                    }
+                },
+                "required": [
+                    "name",
+                    "sceneId"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "StartStopTestResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "sceneId": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "inactive"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "sceneId",
+                    "state",
+                    "message"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "SceneResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "deviceId",
+                    "createdAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "CreateSceneRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "deviceId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "deviceId"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "UpdateSceneRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "deviceId": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            },
+            "DeviceResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "ip": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "ip",
+                    "createdAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "CreateDeviceRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "ip": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "ip"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "UpdateDeviceRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "ip": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {}
+    },
+    "info": {
+        "title": "API Projeto Arduino",
+        "version": "1.0.0",
+        "description": "API para gerenciamento de dispositivos Arduino com controle de cenas e testes",
+        "license": {
+            "name": "ISC"
+        },
+        "contact": {}
+    },
+    "paths": {
+        "/tests": {
+            "get": {
+                "operationId": "GetTestsByScene",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved tests successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/TestResponse"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get all tests for a specific scene",
+                "tags": [
+                    "Tests"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The scene ID to get tests for",
+                        "in": "query",
+                        "name": "sceneId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "CreateTest",
+                "responses": {
+                    "201": {
+                        "description": "Test created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create a new test",
+                "tags": [
+                    "Tests"
+                ],
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateTestRequest"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tests/{testId}/start-stop": {
+            "put": {
+                "operationId": "StartStopTest",
+                "responses": {
+                    "200": {
+                        "description": "Test state toggled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StartStopTestResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Start or stop a test by toggling its state",
+                "tags": [
+                    "Tests"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The test ID to start or stop",
+                        "in": "path",
+                        "name": "testId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/tests/{testId}": {
+            "get": {
+                "operationId": "GetTestById",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved test successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a specific test by ID",
+                "tags": [
+                    "Tests"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The test ID to retrieve",
+                        "in": "path",
+                        "name": "testId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/scenes": {
+            "get": {
+                "operationId": "GetScenesByDevice",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved scenes successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/SceneResponse"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get all scenes for a specific device",
+                "tags": [
+                    "Scenes"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "description": "The device ID to get scenes for",
+                        "in": "query",
+                        "name": "deviceId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "CreateScene",
+                "responses": {
+                    "201": {
+                        "description": "Scene created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SceneResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create a new scene",
+                "tags": [
+                    "Scenes"
+                ],
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSceneRequest"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scenes/{sceneId}": {
+            "put": {
+                "operationId": "UpdateScene",
+                "responses": {
+                    "200": {
+                        "description": "Scene updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SceneResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Update a scene by ID",
+                "tags": [
+                    "Scenes"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "sceneId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSceneRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DeleteScene",
+                "responses": {
+                    "200": {
+                        "description": "Scene deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Delete a scene by ID",
+                "tags": [
+                    "Scenes"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "sceneId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/devices": {
+            "get": {
+                "operationId": "GetDevices",
+                "responses": {
+                    "200": {
+                        "description": "Retrieved devices successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/DeviceResponse"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get all devices",
+                "tags": [
+                    "Devices"
+                ],
+                "security": [],
+                "parameters": []
+            },
+            "post": {
+                "operationId": "CreateDevice",
+                "responses": {
+                    "201": {
+                        "description": "Device created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeviceResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Add a new device",
+                "tags": [
+                    "Devices"
+                ],
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateDeviceRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DeleteAllDevices",
+                "responses": {
+                    "200": {
+                        "description": "All devices and scenes deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "deletedScenes": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "deletedDevices": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "deletedScenes",
+                                        "deletedDevices",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Delete all devices and their related scenes",
+                "tags": [
+                    "Devices"
+                ],
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/devices/{deviceId}": {
+            "put": {
+                "operationId": "UpdateDevice",
+                "responses": {
+                    "200": {
+                        "description": "Device updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeviceResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Update a device by ID",
+                "tags": [
+                    "Devices"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "deviceId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateDeviceRequest"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DeleteDevice",
+                "responses": {
+                    "200": {
+                        "description": "Device deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Delete a device by ID",
+                "tags": [
+                    "Devices"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "deviceId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3002",
+            "description": "Development server"
+        }
+    ]
+}
